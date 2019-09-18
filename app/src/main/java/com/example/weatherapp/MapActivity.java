@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -28,9 +29,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private MapView mapView;
     public static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
     String APIKEY = "AIzaSyAITYHTlV2GSYUNP8zVMbfPy1iDf8qkaCo";
+    String APIDark = "ca39a8fa608cfb403d226a71b0bee3c5";
     String address = "";
     String latitude = "";
     String longitude = "";
+    double temperature = 0, humid = 0, wind = 0, precip = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         //call geocoding function
         geoCoding(address);
-
+        darkSky();
         //map view
         Bundle mapViewBundle = null;
         if (savedInstanceState != null) {
@@ -54,6 +57,50 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mapView.getMapAsync(this);
 
 //        mapFunction();
+    }
+
+    public void darkSky() {
+        findCoords http = new findCoords();
+        String url = String.format("https://api.darksky.net/forecast/%1$s/%2$s,%3$s", APIDark, latitude, longitude);
+        http.changeURL(url);
+        http.execute();
+
+        String output = "";
+        try{
+            output = http.get();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(output);
+
+            //parse the JSON Response from darkSKY
+            JSONObject response = ((JSONObject)jsonObject).getJSONObject("currently");
+            temperature = response.getDouble("temperature");
+            humid = response.getDouble("humidity");
+            wind = response.getDouble("windSpeed");
+            precip = response.getDouble("precipProbability");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        displayTemp();
+    }
+
+    public void displayTemp() {
+        //get the textview for each section
+        TextView tempView = findViewById(R.id.tempVal);
+        TextView humidView = findViewById(R.id.humidVal);
+        TextView windView = findViewById(R.id.windVal);
+        TextView precipView = findViewById(R.id.precipVal);
+
+        //set values from globals
+        //headingView.setText(getString(R.string.random_heading, count));
+        tempView.setText(String.valueOf(temperature));
+        humidView.setText(String.valueOf(humid));
+        windView.setText(String.valueOf(wind));
+        precipView.setText(String.valueOf(precip));
     }
 
     //geocoding thread function

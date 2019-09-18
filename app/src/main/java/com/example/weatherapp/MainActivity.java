@@ -35,9 +35,11 @@ public class MainActivity extends AppCompatActivity {
 
         //random int value to be added to extras along with address
         submitIntent.putExtra("KEY", address);
-
+        String empty = "";
+        textAddress.setText(empty);
         //start activity
         startActivity(submitIntent);
+
     }
 
 
