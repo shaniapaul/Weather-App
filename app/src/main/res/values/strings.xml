@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">WeatherApp</string>
+    <string name="submit">Submit</string>
+    <string name="hint">hint</string>
+    <string name="type_in_location">Type in location:</string>
+    <string name="map">Map</string>
+    <string name="geography">Geography:</string>
+</resources>
