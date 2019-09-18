@@ -1,5 +1,7 @@
 package com.example.weatherapp;
 
+import android.os.AsyncTask;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,17 +12,26 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class findCoords {
+public class findCoords extends AsyncTask<String, Void, String> {
     public findCoords() {
         //empty
     }
 
+    private String url;
+
+    public void changeURL(String urlAddress) {
+        url = urlAddress;
+    }
+
     //Reference: Android Studio Tutorial - Geocoding API-youtube
-    public String APIData(String url) {
+//    public String APIData(String url) {
+    @Override
+    protected String doInBackground(String... strings) {
         URL link;
         String output = "";
         try {
-            link = new URL("http://www.oracle.com/");
+            link = new URL(url);
+//            link = new URL("http://www.oracle.com/");
             //request to make connection
             HttpURLConnection connect = (HttpURLConnection) link.openConnection();
             connect.setRequestMethod("GET");
@@ -28,7 +39,6 @@ public class findCoords {
             connect.setReadTimeout(15000);
             connect.setConnectTimeout(15000);
             connect.setDoInput(true);
-            connect.setDoOutput(true);
             connect.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
             connect.connect();
