@@ -14,4 +14,8 @@
     <string name="windVal">%3d</string>
     <string name="precipVal">%4d</string>
     <string name="tempVal">%1d</string>
+    <string name="welcome_to_the_weatherapp">Welcome to the WeatherApp!</string>
+    <string name="todo">TODO</string>
+    <string name="todo1">TODO</string>
+    <string name="todo3">TODO</string>
 </resources>
